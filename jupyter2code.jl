@@ -2,12 +2,12 @@ using JSON
 
 function jupyter2code(filenameIn::AbstractString, filenameOut::AbstractString)
 	open(filenameIn, "r") do f
-		result = juypyter2code(f, filenameOut)
+		result = jupyter2code(f, filenameOut)
 	end
 end
 
 function jupyter2code(fileIn::IO, filenameOut::AbstractString)
-	json = JSON.parsefile(filenameIn)
+	json = JSON.parse(fileIn)
 
 	output = ""
 
