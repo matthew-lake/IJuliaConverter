@@ -18,9 +18,10 @@ function jupyter2code(fileIn::IO, filenameOut::AbstractString)
 			# If list of strings, join together with no seperator as per docs
 			# (If not a list, then this will have no impact)
 			content = join(cell["source"])
-			# Split the string into lines using '\n', then prepend a hash to each line
+			# Split the string into lines using '\n', then prepend a hash to 
+			# each line, then join and readd '\n'
 			# TODO address line seperator issue
-			output *= join(map(prependHash, split(content, '\n'))) * "\n\n"
+			output *= join(map(prependHash, split(content, '\n')), '\n') * "\n\n"
 		end
 	end
 
@@ -30,8 +31,13 @@ function jupyter2code(fileIn::IO, filenameOut::AbstractString)
 end
 
 function prependHash(str)
-	if str[1] == '#'
-		return "#" * str 
+	if str == ""
+		return "# "
+		# TODO make this intelligent - i.e it should be blank if it's the last 
+		# in the comment block
+	elseif str[1] == '#'
+		# Don't add a space if the line already starts with a hash 
+		return "#" * str 	
 	else
 		return "# " * str
 	end
