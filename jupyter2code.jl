@@ -22,7 +22,7 @@ function jupyter2code(fileIn::IO, filenameOut::AbstractString, linewidth::Int)
 			# Split the string into lines using '\n', then prepend a hash to 
 			# each line, then join and readd '\n'
 			# TODO address line seperator issue
-			output *= join(map(prependHash, split(content, '\n')), '\n') * "\n\n"
+			output *= join(map(prepend_hash, split(content, '\n')), '\n') * "\n\n"
 		end
 	end
 
@@ -31,7 +31,7 @@ function jupyter2code(fileIn::IO, filenameOut::AbstractString, linewidth::Int)
 	close(f)
 end
 
-function prependHash(str)
+function prepend_hash(str::AbstractString)
 	if str == ""
 		return "# "
 		# TODO make this intelligent - i.e it should be blank if it's the last 
