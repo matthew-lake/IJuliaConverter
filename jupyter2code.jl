@@ -1,12 +1,13 @@
 using JSON
 
-function jupyter2code(filenameIn::AbstractString, filenameOut::AbstractString)
+function jupyter2code(filenameIn::AbstractString, filenameOut::AbstractString, 
+		linewidth::Int)
 	open(filenameIn, "r") do f
 		result = jupyter2code(f, filenameOut)
 	end
 end
 
-function jupyter2code(fileIn::IO, filenameOut::AbstractString)
+function jupyter2code(fileIn::IO, filenameOut::AbstractString, linewidth::Int)
 	json = JSON.parse(fileIn)
 
 	output = ""
@@ -43,4 +44,4 @@ function prependHash(str)
 	end
 end
 
-jupyter2code(ARGS[1], split(ARGS[1], '/')[end] * ".jl")
+jupyter2code(ARGS[1], split(ARGS[1], '/')[end] * ".jl", 80)
