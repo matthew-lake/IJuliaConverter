@@ -9,7 +9,12 @@ function jupyter2code(filenameIn, filenameOut)
 		if cell["cell_type"] == "code"
 			output *= join(cell["source"]) * "\n\n"
 		elseif cell["cell_type"] == "markdown"
-			output *= join(map(prependHash, cell["source"])) * "\n\n"
+			# If list of strings, join together with no seperator as per docs
+			# (If not a list, then this will have no impact)
+			content = join(cell["source"])
+			# Split the string into lines using '\n', then prepend a hash to each line
+			# TODO address line seperator issue
+			output *= join(map(prependHash, split(content, '\n'))) * "\n\n"
 		end
 	end
 
