@@ -44,4 +44,19 @@ function prepend_hash(str::AbstractString)
 	end
 end
 
+function splitlines(lines::Array{AbstractString, 1}, linewidth::Int)
+	result = Array{AbstractString, 1}()
+	leftover = ""
+	for line in lines
+		combined = prepend_hash(leftover * line)
+		if length(combined) <= linewidth
+			push!(result, combined)
+		else
+			push!(result, combined[1:80])
+			leftover = combined[81:end]
+		end
+	end
+	return result
+end
+
 jupyter2code(ARGS[1], split(ARGS[1], '/')[end] * ".jl", 80)
