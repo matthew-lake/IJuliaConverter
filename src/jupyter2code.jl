@@ -59,5 +59,3 @@ function splitlines(lines::Array{AbstractString, 1}, linewidth::Int, tabwidth::I
 	end
 	return result
 end
-
-jupyter2code(ARGS[1], split(ARGS[1], '/')[end] * ".jl", 80, 3)
