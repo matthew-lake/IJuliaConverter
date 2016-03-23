@@ -1,5 +1,8 @@
 module IJuliaConverter
+using JSON
 
-# package code goes here
+include("jupyter2code")
+
+export juypter2code
 
 end # module
