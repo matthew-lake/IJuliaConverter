@@ -3,6 +3,6 @@ using JSON
 
 include("jupyter2code.jl")
 
-export juypter2code
+export jupyter2code
 
 end # module
