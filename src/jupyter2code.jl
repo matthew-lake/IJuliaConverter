@@ -1,13 +1,14 @@
 using JSON
 
 function jupyter2code(filenameIn::AbstractString, filenameOut::AbstractString, 
-		linewidth::Int)
+		linewidth::Int, tabwidth::Int)
 	open(filenameIn, "r") do f
 		result = jupyter2code(f, filenameOut)
 	end
 end
 
-function jupyter2code(fileIn::IO, filenameOut::AbstractString, linewidth::Int)
+function jupyter2code(fileIn::IO, filenameOut::AbstractString, linewidth::Int, 
+		tabwidth::Int)
 	json = JSON.parse(fileIn)
 
 	output = ""
@@ -44,12 +45,12 @@ function prepend_hash(str::AbstractString)
 	end
 end
 
-function splitlines(lines::Array{AbstractString, 1}, linewidth::Int)
+function splitlines(lines::Array{AbstractString, 1}, linewidth::Int, tabwidth::Int)
 	result = Array{AbstractString, 1}()
 	leftover = ""
 	for line in lines
 		combined = prepend_hash(leftover * line)
-		if length(combined) <= linewidth
+		if length(replace(combined, '\t', " "^tabwidth)) <= linewidth
 			push!(result, combined)
 		else
 			push!(result, combined[1:80])
@@ -59,4 +60,4 @@ function splitlines(lines::Array{AbstractString, 1}, linewidth::Int)
 	return result
 end
 
-jupyter2code(ARGS[1], split(ARGS[1], '/')[end] * ".jl", 80)
+jupyter2code(ARGS[1], split(ARGS[1], '/')[end] * ".jl", 80, 3)
