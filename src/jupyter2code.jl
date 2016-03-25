@@ -1,6 +1,6 @@
 using JSON
 
-lineSep = @windows ? "\r\n" : "\n"
+systemLineSep = @windows ? "\r\n" : "\n"
 
 function jupyter2code(filenameIn::AbstractString, filenameOut::AbstractString; 
 		linewidth=80, tabwidth=4)
@@ -18,16 +18,27 @@ function jupyter2code(fileIn::IO, filenameOut::AbstractString; linewidth=80,
 
 	for cell in json["cells"]
 		if cell["cell_type"] == "code"
-			# TODO what if single string with different newlines to system
-			output *= join(cell["source"]) * lineSep^2
+			# If list of strings, join together with no seperator as per docs
+			# (If not a list, then this will have no impact)
+			content = join(cell["source"])
+			contentLineSep = length(matchall(r"\r\n", content)) > 0 ? "\r\n" : "\n"
+			# Change to system newlines if needed
+			if contentLineSep != systemLineSep
+				content = join(split(content, contentLineSep), systemLineSep)
+			end
+			output *= content * systemLineSep^2
 		elseif cell["cell_type"] == "markdown"
 			# If list of strings, join together with no seperator as per docs
 			# (If not a list, then this will have no impact)
 			content = join(cell["source"])
-			# Split the string into lines using '\n', then prepend a hash to 
-			# each line, then join and readd '\n'
-			# TODO address line seperator issue
-			output *= join(map(prepend_hash, split(content, '\n')), '\n') * lineSep^2
+			contentLineSep = length(matchall(r"\r\n", content)) > 0 ? "\r\n" : "\n"
+			# Change to system newlines if needed
+			if contentLineSep != systemLineSep
+				content = join(split(content, contentLineSep), systemLineSep)
+			end
+			# Split into lines, prepend a hash to each line, join and add blank line
+			output *= join(map(prepend_hash, split(content, systemLineSep)), 
+				systemLineSep)	* systemLineSep^2
 		end
 	end
 
