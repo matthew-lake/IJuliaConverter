@@ -1,14 +1,15 @@
 using JSON
 
-function jupyter2code(filenameIn::AbstractString, filenameOut::AbstractString, 
-		linewidth::Int, tabwidth::Int)
+function jupyter2code(filenameIn::AbstractString, filenameOut::AbstractString; 
+		linewidth=80, tabwidth=4)
 	open(filenameIn, "r") do f
-		result = jupyter2code(f, filenameOut)
+		result = jupyter2code(f, filenameOut, linewidth=linewidth, 
+			tabwidth=tabwidth)
 	end
 end
 
-function jupyter2code(fileIn::IO, filenameOut::AbstractString, linewidth::Int, 
-		tabwidth::Int)
+function jupyter2code(fileIn::IO, filenameOut::AbstractString; linewidth=80, 
+		tabwidth=4)
 	json = JSON.parse(fileIn)
 
 	output = ""
@@ -45,7 +46,8 @@ function prepend_hash(str::AbstractString)
 	end
 end
 
-function splitlines(lines::Array{AbstractString, 1}, linewidth::Int, tabwidth::Int)
+function splitlines(lines::Array{AbstractString, 1}, linewidth::Int, 
+		tabwidth::Int)
 	result = Array{AbstractString, 1}()
 	leftover = ""
 	for line in lines
