@@ -1,6 +1,6 @@
 The IJuliaConverter.jl package is licensed under the MIT "Expat" License:
 
-> Copyright (c) 2016: matthew-lake.
+> Copyright (c) 2016: Matthew Lake
 >
 > Permission is hereby granted, free of charge, to any person obtaining
 > a copy of this software and associated documentation files (the

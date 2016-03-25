@@ -15,3 +15,8 @@ Use `camelCase`
 
 ### Unicode
 Use Unicode variable names sparingly. Unless the symbol is in common use (e.g. π), either provide an explanation in a comment, or use the English name.
+
+## Functions
+
+Use double-tab continuation indents to distinguish continued function declarations or calls from the first line of code within the function.
+Always use explicit `returns`.
